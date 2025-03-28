@@ -1,5 +1,5 @@
 class Chip8 {
-  constructor() {
+  constructor(state) {
     this.v = new Uint8Array(16)
     this.i = 0
     this.pc = 0x200
@@ -14,6 +14,7 @@ class Chip8 {
     this.scale = 10
     this.canvas = canvas({width: 64 * this.scale, height: 32 * this.scale})
     this.ctx = this.canvas.getContext('2d')
+    this.state = state
     document.body.appendChild(this.canvas)
 
     this.loadFonts()
@@ -266,11 +267,14 @@ class Chip8 {
 
   render() {
     this.ctx.shadowBlur = 0
-    this.ctx.fillStyle = `rgba(0, 0, 0, ${Math.random() * 0.5 + 0.5})`
+    const alpha = this.state.flicker ? Math.random() * 0.5 + 0.5 : 1
+    this.ctx.fillStyle = `rgba(0, 0, 0, ${alpha})`
     this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height)
-    this.ctx.fillStyle = '#0F0'
-    this.ctx.shadowColor = '#0F0'
-    this.ctx.shadowBlur = 10
+    this.ctx.fillStyle = this.state.color
+    if (this.state.glow) {
+      this.ctx.shadowColor = this.state.color
+      this.ctx.shadowBlur = 10
+    }
     for (let i = 0; i < this.display.length; i++) {
       if (!this.display[i])
         continue

@@ -8,6 +8,7 @@ async function getBuffer(src) {
 
 async function init() {
   let u
+  const state = createState({glow: true, flicker: true, color: 'hsl(100, 100.00%, 50.00%)'})
   const demos = await getJson('demos.json')
   const games = await getJson('games.json')
   const sel = select({
@@ -24,8 +25,14 @@ async function init() {
       games.map(o => Object.entries(o).map(([title, src]) => option({value: './roms/games/' + src}, title))).flat()
     ].flat()
   )
-  document.body.append(sel)
-  const chip8 = new Chip8();
+  const glowInput = label(input({type: 'checkbox', checked: state.glow, oninput: function() {
+    state.glow = !state.glow
+  }}), 'Glow')
+  const flickerInput = label(input({type: 'checkbox', checked: state.flicker, oninput: function() {
+    state.flicker = !state.flicker
+  }}), 'Flicker')
+  document.body.append(sel, div(glowInput, flickerInput, ColorPicker(state)))
+  const chip8 = new Chip8(state);
   function loop() {
     for (let i = 0; i < 10; i++)
       if (!chip8.paused)
