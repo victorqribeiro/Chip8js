@@ -2,11 +2,11 @@
 
 A [chip8](https://en.wikipedia.org/wiki/CHIP-8) emulator written in JavaScript.
 
-![Chip 8 Emulator](screenshot.png)
+[![Chip 8 Emulator](screenshot.png)](https://victorqribeiro.github.io/Chip8js/)
 
 [live](https://victorqribeiro.github.io/Chip8js/)
 
-## Controsl
+## Controls
 
 Each program uses its own set of keys and I don't know them by heart, you have to try it out.  
 Possible keys are:   
