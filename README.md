@@ -1,6 +1,6 @@
 # Chip8.js
 
-A [chip8](https://en.wikipedia.org/wiki/CHIP-8) emulator written in JavaScript.
+A [chip8](https://tobiasvl.github.io/blog/write-a-chip-8-emulator) emulator written in JavaScript.
 
 [![Chip 8 Emulator](screenshot.png)](https://victorqribeiro.github.io/Chip8js/)
 
