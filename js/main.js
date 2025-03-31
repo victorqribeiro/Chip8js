@@ -8,7 +8,7 @@ async function getBuffer(src) {
 
 async function init() {
   let u
-  const state = createState({glow: true, flicker: true, color: 'hsl(100, 100.00%, 50.00%)'})
+  const state = createState({glow: true, flicker: true, color: 'hsl(100, 100.00%, 50.00%)', cycles: 10})
   const demos = await getJson('demos.json')
   const games = await getJson('games.json')
   const sel = select({
@@ -31,10 +31,15 @@ async function init() {
   const flickerInput = label(input({type: 'checkbox', checked: state.flicker, oninput: function() {
     state.flicker = !state.flicker
   }}), 'Flicker')
-  document.body.append(sel, div(glowInput, flickerInput, ColorPicker(state)))
-  const chip8 = new Chip8(state);
+  const cycleControl = label(select({value: state.cycles, style: {margin: '0 0.5em'}, oninput: function() {
+      u && cancelAnimationFrame(u)
+      state.cycles = this.value
+      loop()
+    }}, ...[1, 5, 10, 15, 20].map(c => option({value: c, selected: state.cycles == c}, c))), 'Cycles per frame')
+  document.body.append(sel, div(glowInput, flickerInput, cycleControl, ColorPicker(state)))
+  const chip8 = new Chip8(state)
   function loop() {
-    for (let i = 0; i < 10; i++)
+    for (let i = 0; i < state.cycles; i++)
       if (!chip8.paused)
         chip8.emulateCycle()
     chip8.render()
